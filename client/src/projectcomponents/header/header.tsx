@@ -18,11 +18,11 @@ const H: FC<{
   };
 }> = ({ D, fns }) => {
   return (
-    <div className={`h-72`}>
+    <div className={`h-72 pointer-events-none`}>
       <Header
         fns={fns}
         logo={{
-          src: `https://highmountainlabs.io/arclight/cdn/media/cruxdraft.png`,
+          src: `https://highmountainlabs.io/cdn/arclight/media/cruxdraft.png`,
           route: "/",
         }}
         linksRight={

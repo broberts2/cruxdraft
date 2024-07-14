@@ -1,11 +1,29 @@
 import React, { FC } from "react";
 import PlayerCard from "../playercard";
 
-const PlayerRow: FC<{ blue?: boolean }> = ({ blue }) => {
+const PlayerRow: FC<{
+  blue?: boolean;
+  picks: Array<{ [key: string]: any }>;
+  bans: Array<{ [key: string]: any }>;
+  nextevent: { [key: string]: any };
+  draft: { [key: string]: any };
+}> = ({ blue, picks, bans, nextevent, draft }) => {
+  const s =
+    nextevent &&
+    ((nextevent.side === "blue" && blue) ||
+      (nextevent.side === "red" && !blue));
+  const _tracer = (n: number, action: string) =>
+    nextevent &&
+    nextevent.number === n &&
+    nextevent.action === action &&
+    s &&
+    draft.stage === "active";
   const [hoverIndexPick, setHoverIndexPick] = React.useState(-1);
   const [hoverIndexBan, setHoverIndexBan] = React.useState(-1);
+  while (picks.length < 5) picks.push({});
+  while (bans.length < 5) bans.push({});
   const Cards = {
-    Pick: [1, 2, 3, 4, 5].map((C: any, i: number) => (
+    Pick: picks.map((C: any, i: number) => (
       <div
         className={`duration-300`}
         onMouseEnter={() => setHoverIndexPick(i)}
@@ -15,12 +33,13 @@ const PlayerRow: FC<{ blue?: boolean }> = ({ blue }) => {
       >
         <PlayerCard
           blue={blue}
-          tracer={!i && blue}
-          // img={"https://cdn.communitydragon.org/14.1.1/champion/910/splash-art"}
+          tracer={_tracer(i, "pick")}
+          img={C.img}
+          name={C.name}
         />
       </div>
     )),
-    Ban: [1, 2, 3, 4, 5].map((C: any, i: number) => (
+    Ban: bans.map((C: any, i: number) => (
       <div
         className={`${i % 2 === 0 ? `mt-20` : `mt-0`} duration-300`}
         onMouseEnter={() => setHoverIndexBan(i)}
@@ -31,8 +50,10 @@ const PlayerRow: FC<{ blue?: boolean }> = ({ blue }) => {
         <PlayerCard
           ban
           blue={blue}
+          tracer={_tracer(i, "ban")}
           rounded={false}
-          // img={"https://cdn.communitydragon.org/14.1.1/champion/910/splash-art"}
+          img={C.img}
+          name={C.name}
         />
       </div>
     )),

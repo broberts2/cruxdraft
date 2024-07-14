@@ -21,26 +21,34 @@ const DraftDetails: FC<{
         style={{ textShadow: "none" }}
       >
         <div className={`flex items-center text-4xl space-x-10`}>
-          <AnimatedLogo
-            src={`http://localhost:7001/static/media/65a0ca1392db6d98d4c41299.mp4`}
-            clippingmask={`http://localhost:7001/static/media/65a0c9ac92db6d98d4c41239.png`}
+          {/* <AnimatedLogo
+            src={`https://highmountainlabs.io/arclight/static/media/65debfd3a0ce4f406a2ed6f3.mp4`}
+            clippingmask={`https://highmountainlabs.io/arclight/static/media/65dec020a0ce4f406a2ed762.png`}
             width={128}
+          /> */}
+          <img
+            src={`https://highmountainlabs.io/arclight/static/media/65dec020a0ce4f406a2ed762.png`}
+            className={`w-36`}
           />
           <div className={``}>{teams.team1.name}</div>
         </div>
         <div className={`text-xl`}>VS</div>
         <div className={`flex items-center text-4xl space-x-10`}>
-          <AnimatedLogo
-            src={`http://localhost:7001/static/media/65a0ca2692db6d98d4c412dc.mp4`}
-            clippingmask={`http://localhost:7001/static/media/65a0c9b192db6d98d4c41246.png`}
+          {/* <AnimatedLogo
+            src={`https://highmountainlabs.io/arclight/static/media/65debfaea0ce4f406a2ed6c4.mp4`}
+            clippingmask={`https://highmountainlabs.io/arclight/static/media/65dec03aa0ce4f406a2ed772.png`}
             width={128}
+          /> */}
+          <img
+            src={`https://highmountainlabs.io/arclight/static/media/65dec03aa0ce4f406a2ed772.png`}
+            className={`w-36`}
           />
           <div className={``}>{teams.team2.name}</div>
         </div>
       </div>
       {setNextStep ? (
         <NextBttn
-          label={`Generate Links`}
+          label={`Build Draft`}
           setNextStep={() =>
             fns.calls.crux_createdraft({
               team1: {

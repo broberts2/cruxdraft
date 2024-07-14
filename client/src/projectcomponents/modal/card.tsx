@@ -1,7 +1,9 @@
 import React, { FC } from "react";
+import { FontAwesome } from "@highmountainlabs/arclight-ui";
 
 const Card: FC<{
   Champion?: any;
+  draft: any;
   index?: number;
   hoverIndex?: number;
   setHoverIndex?: Function;
@@ -11,6 +13,7 @@ const Card: FC<{
   selectors?: Object;
 }> = ({
   Champion,
+  draft,
   index,
   hoverIndex,
   setHoverIndex,
@@ -38,6 +41,12 @@ const Card: FC<{
       (!search.length ||
         Champion.name.toLowerCase().includes(search.toLowerCase()))
     : undefined;
+  const selected =
+    Champion &&
+    draft?.events?.length &&
+    draft.events.find(
+      (e: any) => parseInt(e.key) && Champion.key === `${e.key}`
+    );
   return Champion ? (
     <div
       onClick={() => (onClick && cond ? onClick(index) : null)}
@@ -55,32 +64,48 @@ const Card: FC<{
           : 0,
         height: !cond ? 0 : undefined,
         overflowY: "hidden",
+        pointerEvents: selected ? "none" : undefined,
       }}
     >
-      {selectors && tags ? (
+      <div
+        className={`w-full h-full`}
+        style={{ opacity: selected ? 0.3 : undefined }}
+      >
+        {selectors && tags ? (
+          <div
+            className={`absolute flex top-0 right-0 duration-0`}
+            style={{ opacity: cond ? 1 : 0 }}
+          >
+            {tags.map((key: string, n: number) => {
+              return (
+                <div>
+                  <img
+                    src={selectors[key].img}
+                    className={`w-5 object-cover`}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
+        <img
+          src={Champion.img}
+          className={`object-cover w-full h-2/3 origin-right object-right`}
+        />
         <div
-          className={`absolute flex top-0 right-0 duration-0`}
+          className={`h-1/3 flex items-center duration-0`}
           style={{ opacity: cond ? 1 : 0 }}
         >
-          {tags.map((key: string, n: number) => {
-            return (
-              <div>
-                <img src={selectors[key].img} className={`w-5 object-cover`} />
-              </div>
-            );
-          })}
+          <div className={`m-auto text-md`}>{Champion.name}</div>
+        </div>
+      </div>
+      {selected ? (
+        <div
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
+        >
+          <FontAwesome icon={"lock"} size={"lg"} />
         </div>
       ) : null}
-      <img
-        src={Champion.img}
-        className={`object-cover w-full h-2/3 origin-right object-right`}
-      />
-      <div
-        className={`h-1/3 flex items-center duration-0`}
-        style={{ opacity: cond ? 1 : 0 }}
-      >
-        <div className={`m-auto text-md`}>{Champion.name}</div>
-      </div>
     </div>
   ) : (
     <div

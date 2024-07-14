@@ -2,12 +2,20 @@ import React, { FC } from "react";
 import { FontAwesome } from "@highmountainlabs/arclight-ui";
 import AudioVisualizer from "../audiovisualizer";
 
+const A = new Audio();
+A.volume = 0.1;
+A.muted = true;
+A.loop = true;
+
 const AudioControls: FC<{
   videoMuted: boolean;
   setVideoMuted: Function;
   sfxMuted: boolean;
   setSfxMuted: Function;
 }> = ({ videoMuted, setVideoMuted, sfxMuted, setSfxMuted }) => {
+  React.useEffect(() => {
+    A.src = `https://highmountainlabs.io/arclight/static/media/6693a0ac44d95976de1876f4.mp3`;
+  }, []);
   const Control = (props: any) => (
     <div
       className={`rounded-full bg-background-secondary w-10 h-10 flex justify-center items-center relative`}
@@ -43,7 +51,11 @@ const AudioControls: FC<{
               i={0}
               icon={`music`}
               cond={videoMuted}
-              onClick={() => setVideoMuted(!videoMuted)}
+              onClick={() => {
+                if (!(A.duration > 0 && !A.paused)) A.play();
+                A.muted = !videoMuted;
+                setVideoMuted(!videoMuted);
+              }}
             />
             <Control
               i={1}

@@ -27,6 +27,11 @@ const Home: FC<{
       name: "Infernal Soul",
     },
   };
+  const [links, setLinks] = React.useState({
+    bluelink: undefined,
+    redlink: undefined,
+    spectatorlink: undefined,
+  });
   const [teams, setTeams] = React.useState(DEFTEAMS);
   const [copyHoverIndex, setCopyHoverIndex] = React.useState(0);
   const [typeIndex, setTypeIndex] = React.useState(0);
@@ -53,6 +58,12 @@ const Home: FC<{
   };
   React.useEffect(() => {
     if (!D.crux_createdraft) return;
+    if (stepCount === 3)
+      setLinks({
+        bluelink: D.crux_createdraft.bluelink,
+        redlink: D.crux_createdraft.redlink,
+        spectatorlink: D.crux_createdraft.spectatorlink,
+      });
     setNextStep();
   }, [D]);
   const sss = [
@@ -68,16 +79,7 @@ const Home: FC<{
             pageCallback={(n: number) => setTypeIndex(n)}
             cards={[
               {
-                // locked: league.locked,
-                hoverComponent: (
-                  <div>
-                    <img
-                      src={`http://localhost:7001/static/media/65a2e1decb7c94d5fabbb2fd.png`}
-                      className={`w-24 lg:w-44 object-cover m-auto`}
-                    />
-                  </div>
-                ),
-                bgImg: `http://localhost:7001/static/media/65a2dee3cb7c94d5fabbb208.png`,
+                bgImg: `https://highmountainlabs.io/arclight/static/media/65dec21aa0ce4f406a2ed9c9.png`,
                 subText: `Tournament Draft`,
                 onClick: () => null,
               },
@@ -157,70 +159,37 @@ const Home: FC<{
           <Step text={`Draft Details`} />
           <DraftDetails teams={teams} />
           <div className={`cursor-pointer flex-col space-y-5 py-10`}>
-            <div
-              className={`duration-300 transition-all`}
-              style={{
-                opacity: !copyHoverIndex || copyHoverIndex === 1 ? 1 : 0.3,
-                color: copyHoverIndex === 1 ? "purple" : undefined,
-              }}
-              onMouseEnter={() => setCopyHoverIndex(1)}
-              onMouseLeave={() => setCopyHoverIndex(0)}
-              onClick={() => console.log(fns)}
-            >
-              <div className={`pointer-events-none`}>
-                <TextField
-                  span
-                  onChange={(e: any) => null}
-                  value={`djkfl;adsfjadklfajskl;fadsjf;lkadsjfkdals;fjadsl;kfa`}
-                  label={"Blue Link (Click to copy)"}
-                  key={2}
-                  type={"text"}
-                  variant={"standard"}
-                />
+            {["Blue", "Red", "Spectator"].map((el: any, n: number) => (
+              <div
+                className={`duration-300 transition-all`}
+                style={{
+                  opacity:
+                    !copyHoverIndex || copyHoverIndex === n + 1 ? 1 : 0.3,
+                  color: copyHoverIndex === n + 1 ? "purple" : undefined,
+                }}
+                onMouseEnter={() => setCopyHoverIndex(n + 1)}
+                onMouseLeave={() => setCopyHoverIndex(0)}
+                onClick={() =>
+                  links[`${el.toLowerCase()}link`]
+                    ? navigator.clipboard.writeText(
+                        links[`${el.toLowerCase()}link`]
+                      )
+                    : null
+                }
+              >
+                <div className={`pointer-events-none`}>
+                  <TextField
+                    span
+                    onChange={(e: any) => null}
+                    value={links[`${el.toLowerCase()}link`]}
+                    label={`${el} Link (Click to copy)`}
+                    key={n + 2}
+                    type={"text"}
+                    variant={"standard"}
+                  />
+                </div>
               </div>
-            </div>
-            <div
-              className={`duration-300 transition-all`}
-              style={{
-                opacity: !copyHoverIndex || copyHoverIndex === 2 ? 1 : 0.3,
-                color: copyHoverIndex === 2 ? "purple" : undefined,
-              }}
-              onMouseEnter={() => setCopyHoverIndex(2)}
-              onMouseLeave={() => setCopyHoverIndex(0)}
-            >
-              <div className={`pointer-events-none`}>
-                <TextField
-                  span
-                  onChange={(e: any) => null}
-                  value={`djkfl;adsfjadklfajskl;fadsjf;lkadsjfkdals;fjadsl;kfa`}
-                  label={"Red Link (Click to copy)"}
-                  key={3}
-                  type={"text"}
-                  variant={"standard"}
-                />
-              </div>
-            </div>
-            <div
-              className={`duration-300 transition-all`}
-              style={{
-                opacity: !copyHoverIndex || copyHoverIndex === 3 ? 1 : 0.3,
-                color: copyHoverIndex === 3 ? "purple" : undefined,
-              }}
-              onMouseEnter={() => setCopyHoverIndex(3)}
-              onMouseLeave={() => setCopyHoverIndex(0)}
-            >
-              <div className={`pointer-events-none`}>
-                <TextField
-                  span
-                  onChange={(e: any) => null}
-                  value={`djkfl;adsfjadklfajskl;fadsjf;lkadsjfkdals;fjadsl;kfa`}
-                  label={"Spectator Link (Click to copy)"}
-                  key={4}
-                  type={"text"}
-                  variant={"standard"}
-                />
-              </div>
-            </div>
+            ))}
           </div>
           <Button
             onClick={() => {
@@ -240,7 +209,7 @@ const Home: FC<{
     },
   ];
   const [steps, setSteps] = React.useState<any>(sss);
-  return true ? (
+  return D?.getrecords_settings?.init?.records[0] ? (
     <Page
       fns={fns}
       // backgroundImage={{
@@ -248,20 +217,16 @@ const Home: FC<{
       //   opacity: 0.5,
       // }}
     >
-      <div className={`relative pb-1`}>
+      <div className={`relative pb-10`}>
         <video
-          src={`http://localhost:7001/static/media/65a0617d84efbfeecffaf956.mp4`}
+          src={D.getrecords_settings.init.records[0].cruxtheme.backgroundvideo}
           className={`absolute w-full h-full object-cover opacity-10`}
           muted
           autoPlay
-          preload="auto"
           loop
         />
         <Header fns={fns} D={D} />
-        <MissionStatement
-          title={"Crux Draft"}
-          Message={`Crux is a sophisticated champion drafting tool designed specifically for the competitive realm of League of Legends. It stands out as an essential asset for both professional teams and aspiring competitors, offering a deep analysis of champion strengths, weaknesses, and synergies. The tool's interface is sleek and user-friendly, allowing for easy navigation through a vast database of game statistics and historical match data. This cutting-edge tool not only enhances the strategic depth of champion selection but also elevates the overall competitive experience in League of Legends.`}
-        />
+        <MissionStatement title={"Crux Draft"} Message={``} />
       </div>
       <div
         className={`w-full relative flex items-center bg-white py-8 flex-col`}

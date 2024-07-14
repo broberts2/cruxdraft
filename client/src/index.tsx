@@ -10,11 +10,18 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App
-      nopage={"http://highmountainlabs.io/arclight/cdn/media/404.jpg"}
-      socketEndpoint={`http://localhost:7001`}
-      loader={`https://highmountainlabs.io/arclight/cdn/media/cruxdraft.png`}
+      nopage={"http://highmountainlabs.io/cdn/arclight/media/404.jpg"}
+      socketEndpoint={
+        process.env.REACT_APP_ENVIRONMENT === "production"
+          ? `https://highmountainlabs.io:7001`
+          : `http://localhost:7001`
+      }
+      loader={`https://highmountainlabs.io/cdn/arclight/media/cruxdraft.png`}
       background={{
-        src: `http://localhost:7001/static/media/65867bf89797917cc725ea5c.jpg`,
+        src:
+          process.env.REACT_APP_ENVIRONMENT === "production"
+            ? `https://highmountainlabs.io:7001`
+            : `http://localhost:7001/static/media/65867bf89797917cc725ea5c.jpg`,
         opacity: 0.05,
       }}
       pages={{
@@ -22,14 +29,20 @@ root.render(
           Home: {
             route: "/",
             backgroundImage:
-              "http://localhost:7001/static/media/65ae9dd7aba9a954414b8085.jpg",
+              process.env.REACT_APP_ENVIRONMENT === "production"
+                ? `https://highmountainlabs.io:7001`
+                : "http://localhost:7001/static/media/65ae9dd7aba9a954414b8085.jpg",
             authBackgroundImage:
-              "http://localhost:7001/static/media/65ae9dceaba9a954414b8078.jpg",
+              process.env.REACT_APP_ENVIRONMENT === "production"
+                ? `https://highmountainlabs.io:7001`
+                : "http://localhost:7001/static/media/65ae9dceaba9a954414b8078.jpg",
             noSelect:
-              "https://highmountainlabs.io/arclight/cdn/media/cruxdraft.png",
+              process.env.REACT_APP_ENVIRONMENT === "production"
+                ? `https://highmountainlabs.io:7001`
+                : "https://highmountainlabs.io/cdn/arclight/media/cruxdraft.png",
           },
         },
-        _root_: {
+        crux: {
           Home: { route: "/", component: require("./pages/Home") },
           DraftApp: {
             route: "/cruxdraft",

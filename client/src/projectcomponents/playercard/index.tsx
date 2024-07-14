@@ -8,12 +8,13 @@ const PlayerCard: FC<{
   rounded?: boolean;
   ban?: boolean;
   img?: string;
+  name?: string;
   player?: {
     positionimg: string;
     name: string;
   };
   tracer?: boolean;
-}> = ({ blue, img, rounded, ban, player, tracer }) => {
+}> = ({ blue, img, rounded, ban, player, tracer, name }) => {
   const bottombg = `bg-neutral-900`;
   const bordercolorblue = `from-teal-500 via-blue-500 to-blue-900`;
   const bordercolorred = `from-pink-500 via-red-500 to-red-900`;
@@ -23,6 +24,16 @@ const PlayerCard: FC<{
         player ? `w-44 h-32` : !ban ? `w-36 h-52` : `w-32 h-32`
       } cursor-pointer ${rounded ? `rounded-lg` : ""}`}
     >
+      {true && !player && img ? (
+        <video
+          autoPlay
+          muted
+          src={`https://highmountainlabs.io/arclight/static/media/65dec5c6a0ce4f406a2edae7.webm`}
+          className={`absolute ${
+            ban ? `-top-1/2 -translate-y-1/2 ` : `top-0 -translate-y-1/2 `
+          }left-1/2 -translate-x-1/2 w-full pointer-events-none`}
+        />
+      ) : null}
       <div
         className={`absolute ${
           img ? `h-2/3` : `h-full`
@@ -35,7 +46,7 @@ const PlayerCard: FC<{
             src={
               img
                 ? img
-                : `https://highmountainlabs.io/arclight/cdn/media/cruxdraft.png`
+                : `https://highmountainlabs.io/cdn/arclight/media/cruxdraft.png`
             }
             className={`absolute h-full w-full object-cover${
               img ? ` object-right` : ""
@@ -61,7 +72,7 @@ const PlayerCard: FC<{
       >
         <div className={`relative w-full h-full flex items-center`}>
           <div className={`m-auto ${ban ? `text-sm` : `text-lg`}`}>
-            {player ? player.name : "Hwei"}
+            {player ? player.name : name}
           </div>
         </div>
       </div>

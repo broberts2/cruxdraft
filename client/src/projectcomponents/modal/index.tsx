@@ -3,55 +3,52 @@ import { TextField, Button } from "@highmountainlabs/arclight-ui";
 
 import Card from "./card";
 
-const Modal: FC<{ D: any; fns: any }> = ({ D, fns }) => {
+const Modal: FC<{ D: any; fns: any; draft: { [key: string]: any } }> = ({
+  D,
+  fns,
+  draft,
+}) => {
+  const [timer, setTimer] = React.useState(draft.timer);
   const COL_NUM = 5;
-  const [bgImg, setBgImg] = React.useState<string | undefined>(undefined);
+  const [bgImg, setBgImg] = React.useState<string | undefined>(
+    draft.championhoverid
+      ? D.getrecords_champion.init.records.find(
+          (C: any) => C.key === draft.championhoverid
+        ).splashimg
+      : undefined
+  );
   const [search, setSearch] = React.useState("");
   const [hoverIndex, setHoverIndex] = React.useState(-1);
-  const [selectedIndex, setSelectedIndex] = React.useState(undefined);
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    draft.championhoverid
+      ? D.getrecords_champion.init.records.find(
+          (C: any) => C.key === draft.championhoverid
+        )._id
+      : undefined
+  );
   const [selectors, setSelectors] = React.useState({
-    // top: {
-    //   img: "http://localhost:7000/static/media/6586caff93b08d225390cd87.png",
-    //   active: true,
-    // },
-    // jungle: {
-    //   img: "http://localhost:7000/static/media/6586cb0b93b08d225390cd94.png",
-    //   active: true,
-    // },
-    // middle: {
-    //   img: "http://localhost:7000/static/media/6586cb1193b08d225390cda1.png",
-    //   active: true,
-    // },
-    // bottom: {
-    //   img: "http://localhost:7000/static/media/6586cb1993b08d225390cdae.png",
-    //   active: true,
-    // },
-    // support: {
-    //   img: "http://localhost:7000/static/media/6586cb2a93b08d225390cdbb.png",
-    //   active: true,
-    // },
     assassin: {
-      img: "http://localhost:7001/static/media/65ae984daba9a954414b7ed6.png",
+      img: "https://highmountainlabs.io/arclight/static/media/65dec083a0ce4f406a2ed7d0.png",
       active: true,
     },
     fighter: {
-      img: "http://localhost:7001/static/media/65ae985caba9a954414b7f00.png",
+      img: "https://highmountainlabs.io/arclight/static/media/65dec08ca0ce4f406a2ed7e0.png",
       active: true,
     },
     mage: {
-      img: "http://localhost:7001/static/media/65ae9839aba9a954414b7ebc.png",
+      img: "https://highmountainlabs.io/arclight/static/media/65dec096a0ce4f406a2ed7f0.png",
       active: true,
     },
     marksman: {
-      img: "http://localhost:7001/static/media/65ae9841aba9a954414b7ec9.png",
+      img: "https://highmountainlabs.io/arclight/static/media/65dec0a3a0ce4f406a2ed800.png",
       active: true,
     },
     support: {
-      img: "http://localhost:7001/static/media/65ae9863aba9a954414b7f0d.png",
+      img: "https://highmountainlabs.io/arclight/static/media/65dec0b7a0ce4f406a2ed810.png",
       active: true,
     },
     tank: {
-      img: "http://localhost:7001/static/media/65ae9869aba9a954414b7f1a.png",
+      img: "https://highmountainlabs.io/arclight/static/media/65dec0c3a0ce4f406a2ed820.png",
       active: true,
     },
   });
@@ -82,6 +79,7 @@ const Modal: FC<{ D: any; fns: any }> = ({ D, fns }) => {
     .map((Champion: any, i: number) => {
       row.push(
         <Card
+          draft={draft}
           selectors={selectors}
           selectedIndex={selectedIndex}
           search={search.toLowerCase()}
@@ -90,6 +88,14 @@ const Modal: FC<{ D: any; fns: any }> = ({ D, fns }) => {
           hoverIndex={hoverIndex}
           setHoverIndex={(i: number) => setHoverIndex(i)}
           onClick={(n: number) => {
+            console.log(draft);
+            if (fns?.calls?.crux_hoverchampion)
+              fns.calls.crux_hoverchampion({
+                state: fns.readState().query.d,
+                id: D.getrecords_champion.init.records.find(
+                  (C: any) => C._id === Champion._id
+                ).key,
+              });
             setSelectedIndex(Champion._id);
             setBgImg(Champion.img);
           }}
@@ -103,20 +109,35 @@ const Modal: FC<{ D: any; fns: any }> = ({ D, fns }) => {
   if (row.length) {
     while (row.length < COL_NUM) {
       row.push(
-        <Card search={search} setHoverIndex={() => setHoverIndex(-1)} />
+        <Card
+          draft={draft}
+          search={search}
+          setHoverIndex={() => setHoverIndex(-1)}
+        />
       );
     }
     rows.push(<div className={`flex space-x-2 justify-center`}>{row}</div>);
   }
+  React.useEffect(() => {
+    const id = setInterval(
+      () => setTimer((lastTime: number) => lastTime - 1),
+      1000
+    );
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
   return (
     <div className={`w-full h-full overflow-y-auto flex-col relative`}>
       {bgImg ? (
         <img
-          className={`absolute w-full h-full object-cover opacity-30`}
+          className={`absolute w-full h-full object-cover opacity-10`}
           src={bgImg}
         />
       ) : null}
-      <div className={`font-primary absolute top-5 right-24 text-5xl`}>45</div>
+      <div className={`font-primary absolute top-5 right-24 text-5xl`}>
+        {timer > 0 ? timer : 0}
+      </div>
       <div className={`m-3 flex-col space-y-3`}>
         <TextField
           hot
@@ -172,7 +193,16 @@ const Modal: FC<{ D: any; fns: any }> = ({ D, fns }) => {
           type={"button"}
           size={"normal"}
           animation={true}
-          onClick={(status: any) => null}
+          onClick={(status: any) =>
+            fns?.calls?.crux_selectchampion
+              ? fns.calls.crux_selectchampion({
+                  state: fns.readState().query.d,
+                  champion: D.getrecords_champion.init.records.find(
+                    (C: any) => C._id === selectedIndex
+                  ),
+                })
+              : null
+          }
         />
       </div>
     </div>

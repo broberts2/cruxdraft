@@ -38,7 +38,3 @@ const AnimatedLogo: FC<{
 };
 
 export default AnimatedLogo;
-
-// img={`http://localhost:7001/static/media/65a0c9ac92db6d98d4c41239.png`}
-// title={"Ocean Soul"}
-// videosrc={`http://localhost:7001/static/media/65a0ca1392db6d98d4c41299.mp4`}

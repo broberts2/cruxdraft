@@ -2,11 +2,11 @@ import React, { FC } from "react";
 import PlayerCard from "../playercard";
 
 const __Pos = {
-  0: `http://localhost:7001/static/media/65ae9874aba9a954414b7f27.png`,
-  1: `http://localhost:7001/static/media/65ae987eaba9a954414b7f34.png`,
-  2: `http://localhost:7001/static/media/65ae988daba9a954414b7f4e.png`,
-  3: `http://localhost:7001/static/media/65ae9895aba9a954414b7f5b.png`,
-  4: `http://localhost:7001/static/media/65ae9885aba9a954414b7f41.png`,
+  0: `https://highmountainlabs.io/arclight/static/media/65dec0f8a0ce4f406a2ed8b5.png`,
+  1: `https://highmountainlabs.io/arclight/static/media/65dec103a0ce4f406a2ed8c5.png`,
+  2: `https://highmountainlabs.io/arclight/static/media/65dec10da0ce4f406a2ed8d5.png`,
+  3: `https://highmountainlabs.io/arclight/static/media/65dec118a0ce4f406a2ed8e5.png`,
+  4: `https://highmountainlabs.io/arclight/static/media/65dec12da0ce4f406a2ed8f5.png`,
 };
 
 const PlayerRow: FC<{ blue?: boolean }> = ({ blue }) => {
@@ -32,15 +32,15 @@ const PlayerRow: FC<{ blue?: boolean }> = ({ blue }) => {
       />
     </div>
   ));
-  return (
+  return false ? (
     <div
       className={`relative flex ${
         hoverIndex >= 0 ? `-space-x-16` : `-space-x-20`
-      } justify-start items-center m-auto transition-all duration-300`}
+      } justify-start items-center m-auto transition-all duration-300 z-0`}
     >
       {Cards}
     </div>
-  );
+  ) : null;
 };
 
 export default PlayerRow;
