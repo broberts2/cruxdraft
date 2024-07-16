@@ -9,7 +9,10 @@ const __Pos = {
   4: `https://highmountainlabs.io/arclight/static/media/65dec12da0ce4f406a2ed8f5.png`,
 };
 
-const PlayerRow: FC<{ blue?: boolean }> = ({ blue }) => {
+const PlayerRow: FC<{ blue?: boolean; setFlyCard: Function }> = ({
+  blue,
+  setFlyCard,
+}) => {
   const [hoverIndex, setHoverIndex] = React.useState(-1);
   const Cards = [1, 2, 3, 4, 5].map((C: any, i: number) => (
     <div
@@ -23,6 +26,7 @@ const PlayerRow: FC<{ blue?: boolean }> = ({ blue }) => {
       }}
     >
       <PlayerCard
+        setFlyCard={setFlyCard}
         blue={blue}
         img={"https://cdn.communitydragon.org/14.1.1/champion/910/splash-art"}
         player={{

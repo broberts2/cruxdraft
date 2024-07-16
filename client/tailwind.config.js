@@ -23,6 +23,10 @@ module.exports = {
           primary: "rgba(0,0,0,0.75)",
         },
       },
+      screens: {
+        "3xl": "1780px",
+        "4xl": "1920px",
+      },
     },
   },
   important: false,

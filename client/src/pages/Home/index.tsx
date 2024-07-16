@@ -58,12 +58,18 @@ const Home: FC<{
   };
   React.useEffect(() => {
     if (!D.crux_createdraft) return;
-    if (stepCount === 3)
+    if (
+      stepCount === 3 &&
+      !links.bluelink &&
+      !links.redlink &&
+      !links.spectatorlink
+    ) {
       setLinks({
         bluelink: D.crux_createdraft.bluelink,
         redlink: D.crux_createdraft.redlink,
         spectatorlink: D.crux_createdraft.spectatorlink,
       });
+    }
     setNextStep();
   }, [D]);
   const sss = [
@@ -193,9 +199,15 @@ const Home: FC<{
           </div>
           <Button
             onClick={() => {
+              return window.location.reload();
               setTeams(DEFTEAMS);
               setSteps(sss);
               setStepCount(1);
+              setLinks({
+                bluelink: undefined,
+                redlink: undefined,
+                spectatorlink: undefined,
+              });
               delete D.crux_createdraft;
             }}
             type={"standard"}

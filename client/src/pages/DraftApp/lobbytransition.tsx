@@ -13,7 +13,8 @@ const LobbyTransition: FC<{
   actions: {
     [key: string]: any;
   };
-}> = ({ fns, D, endpoint, draft, actions }) => {
+  replay?: string;
+}> = ({ fns, D, endpoint, draft, actions, replay }) => {
   const [sequence, setSequence] = React.useState(0);
   React.useEffect(() => {
     setTimeout(() => setSequence(1), 1250);
@@ -65,7 +66,10 @@ const LobbyTransition: FC<{
   ) : draft ? (
     <div
       className={`w-full h-full absolute top-0${
-        draft.stage !== "lobbytransition" ? ` opacity-0` : ""
+        draft.stage !== "lobbytransition" &&
+        (!replay || !replay?.includes("transition"))
+          ? ` opacity-0`
+          : ""
       } transition-all duration-300 bg-background-primary pointer-events-none flex justify-center items-center`}
     >
       <img

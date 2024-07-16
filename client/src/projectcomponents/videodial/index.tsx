@@ -20,6 +20,7 @@ const TeamTitle: FC<{
     return arr;
   };
   const validactor =
+    !draft.completeddate &&
     draft.stage === "active" &&
     ((draft?.nextevent?.side === "blue" && D?.crux_lobbycheck?.bluecaptain) ||
       (draft?.nextevent?.side === "red" && D?.crux_lobbycheck?.redcaptain));
@@ -30,7 +31,7 @@ const TeamTitle: FC<{
     : dialImg;
   return (
     <div
-      className={`rounded-full w-40 h-40 xl:w-60 xl:h-60 relative cursor-pointer shadow-lg ${
+      className={`rounded-full w-40 h-40 lg:w-44 lg:h-44 xl:w-48 xl:h-48 2xl:w-52 2xl:h-52 3xl:w-56 3xl:h-56 4xl:w-60 4xl:h-60 relative cursor-pointer shadow-lg ${
         draft.stage === "active" && validactor
           ? `hover:shadow-violet-600 `
           : " "
@@ -46,13 +47,13 @@ const TeamTitle: FC<{
       }}
     >
       {[
-        { d: `20s`, o: `30` },
-        { d: `45s`, o: `30` },
-        { d: `70s`, o: `30` },
+        { d: `20s`, o: `30`, r: "0" },
+        { d: `45s`, o: `30`, r: "25" },
+        { d: `70s`, o: `30`, r: "135" },
       ].map((el: any) => (
         <Styles.Border
           className={`border-cyan-400 rounded-full animate-spin w-full h-full absolute opacity-${el.o}`}
-          style={{ animationDuration: el.d }}
+          style={{ animationDuration: el.d, transform: `rotate(${el.r}deg)` }}
         />
       ))}
       <div>{setImage(dialbgimg)}</div>
@@ -60,7 +61,7 @@ const TeamTitle: FC<{
         className={`absolute w-full h-full flex justify-center items-center`}
       >
         <div
-          className={`text-xl transition-all duration-300`}
+          className={`text-xs md:text-sm xl:text-xl transition-all duration-300`}
           style={{
             opacity:
               (draft.stage === "active" && validactor) ||

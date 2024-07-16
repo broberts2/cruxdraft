@@ -15,7 +15,7 @@ const TeamTitle: FC<{
         <img className={`w-full object-cover relative`} src={img} />
       )}
     </div>,
-    <div className={`text-3xl`}>{title}</div>,
+    <div className={`lg:text-xl 2xl:text-3xl`}>{title}</div>,
   ];
   return (
     <div className={`w-full flex ${reverse ? `justify-end` : `justify-start`}`}>

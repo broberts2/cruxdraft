@@ -52,10 +52,10 @@ const DraftDetails: FC<{
           setNextStep={() =>
             fns.calls.crux_createdraft({
               team1: {
-                name: "test team 1",
+                name: teams.team1.name,
               },
               team2: {
-                name: "test team 2",
+                name: teams.team2.name,
               },
             })
           }

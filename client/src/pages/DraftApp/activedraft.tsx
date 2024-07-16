@@ -4,6 +4,7 @@ import PlayerRow from "../../projectcomponents/playerrow";
 import TeamTitleRow from "../../projectcomponents/teamtitlerow";
 import TeamRow from "../../projectcomponents/teamrow";
 import VideoDial from "../../projectcomponents/videodial";
+import FlyCard from "../../projectcomponents/flycard";
 
 const ActiveDraft: FC<{
   fns: {
@@ -17,13 +18,16 @@ const ActiveDraft: FC<{
   };
   D: { [key: string]: any };
   endpoint?: string;
-}> = ({ fns, D, endpoint, draft, actions }) => {
+  replay?: string;
+}> = ({ fns, D, endpoint, draft, actions, replay }) => {
+  const [flyCard, setFlyCard] = React.useState(undefined);
   React.useEffect(() => {
     if (fns?.calls?.getrecords_champion && !D.getrecords_champion)
       fns.calls.getrecords_champion();
   }, [fns.calls]);
-  console.log(draft);
-  return draft && D?.getrecords_champion ? (
+  return draft &&
+    D?.getrecords_champion &&
+    (!replay || !replay?.includes("transition")) ? (
     <div
       className={`w-full h-full absolute top-0${
         draft.stage === "active" ||
@@ -41,7 +45,7 @@ const ActiveDraft: FC<{
         muted
         loop
       />
-      {draft?.nextevent ? (
+      {draft?.nextevent && draft?.stage === "active" ? (
         <div
           className={`${
             draft.nextevent.side === "blue" ? "left-0" : "right-0"
@@ -56,12 +60,13 @@ const ActiveDraft: FC<{
       ) : null}
       <div className={`relative`}>
         <div className={`h-1/3`}>
-          <TeamTitleRow />
+          <TeamTitleRow draft={draft} />
         </div>
         <div className={`flex justify-center h-1/3`}>
           <div className={`flex items-center`}>
             <PlayerRow
               blue
+              setFlyCard={setFlyCard}
               draft={draft}
               nextevent={draft.nextevent}
               picks={
@@ -107,6 +112,7 @@ const ActiveDraft: FC<{
               ) : null}
             </div>
             <PlayerRow
+              setFlyCard={setFlyCard}
               draft={draft}
               nextevent={draft.nextevent}
               picks={
@@ -141,7 +147,7 @@ const ActiveDraft: FC<{
       </div>
       <div className={`flex w-full h-1/4 items-center justify-center relative`}>
         <div className={`w-2/5 flex`}>
-          <TeamRow blue />
+          <TeamRow blue setFlyCard={setFlyCard} />
         </div>
         <div className={`w-1/5 text-center`}>
           <div className={`text-xl`}>Tournament Draft</div>
@@ -155,9 +161,10 @@ const ActiveDraft: FC<{
           ) : null}
         </div>
         <div className={`w-2/5 flex`}>
-          <TeamRow />
+          <TeamRow setFlyCard={setFlyCard} />
         </div>
       </div>
+      <FlyCard flyCard={flyCard} setFlyCard={setFlyCard} />
     </div>
   ) : null;
 };

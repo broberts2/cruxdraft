@@ -25,23 +25,6 @@ root.render(
         opacity: 0.05,
       }}
       pages={{
-        admin: {
-          Home: {
-            route: "/",
-            backgroundImage:
-              process.env.REACT_APP_ENVIRONMENT === "production"
-                ? `https://highmountainlabs.io:7001`
-                : "http://localhost:7001/static/media/65ae9dd7aba9a954414b8085.jpg",
-            authBackgroundImage:
-              process.env.REACT_APP_ENVIRONMENT === "production"
-                ? `https://highmountainlabs.io:7001`
-                : "http://localhost:7001/static/media/65ae9dceaba9a954414b8078.jpg",
-            noSelect:
-              process.env.REACT_APP_ENVIRONMENT === "production"
-                ? `https://highmountainlabs.io:7001`
-                : "https://highmountainlabs.io/cdn/arclight/media/cruxdraft.png",
-          },
-        },
         crux: {
           Home: { route: "/", component: require("./pages/Home") },
           DraftApp: {

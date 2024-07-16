@@ -18,7 +18,7 @@ const H: FC<{
   };
 }> = ({ D, fns }) => {
   return (
-    <div className={`h-72 pointer-events-none`}>
+    <div className={`h-32 lg:h-72 pointer-events-none`}>
       <Header
         fns={fns}
         logo={{

@@ -6,8 +6,9 @@ const PlayerRow: FC<{
   picks: Array<{ [key: string]: any }>;
   bans: Array<{ [key: string]: any }>;
   nextevent: { [key: string]: any };
+  setFlyCard: Function;
   draft: { [key: string]: any };
-}> = ({ blue, picks, bans, nextevent, draft }) => {
+}> = ({ blue, picks, bans, nextevent, draft, setFlyCard }) => {
   const s =
     nextevent &&
     ((nextevent.side === "blue" && blue) ||
@@ -32,28 +33,34 @@ const PlayerRow: FC<{
         }}
       >
         <PlayerCard
+          setFlyCard={setFlyCard}
           blue={blue}
           tracer={_tracer(i, "pick")}
           img={C.img}
           name={C.name}
+          champion={C}
         />
       </div>
     )),
     Ban: bans.map((C: any, i: number) => (
       <div
-        className={`${i % 2 === 0 ? `mt-20` : `mt-0`} duration-300`}
+        className={`${
+          i % 2 === 0 ? `mt-3 md:mt-5 xl:mt-10 2xl:mt-20` : `mt-0`
+        } duration-300`}
         onMouseEnter={() => setHoverIndexBan(i)}
         style={{
           opacity: hoverIndexBan < 0 ? 1 : hoverIndexBan === i ? 1 : 0.2,
         }}
       >
         <PlayerCard
+          setFlyCard={setFlyCard}
           ban
           blue={blue}
           tracer={_tracer(i, "ban")}
           rounded={false}
           img={C.img}
           name={C.name}
+          champion={C}
         />
       </div>
     )),
@@ -69,7 +76,7 @@ const PlayerRow: FC<{
           }}
         >
           {Cards[k].map((C: JSX.Element, i: number) => (
-            <div className={`flex items-center`}>
+            <div className={`flex items-center m-auto my-3`}>
               {C}
               {i < Cards[k].length - 1 ? (
                 <div

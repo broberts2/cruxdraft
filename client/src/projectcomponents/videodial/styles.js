@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const fade = `radial-gradient(circle, black 55%, transparent 70%)`;
+const fade = `radial-gradient(circle, black 45%, transparent 70%)`;
 
 const BackgroundImgFade = styled.img`
   -webkit-mask-image: ${fade};

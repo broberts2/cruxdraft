@@ -35,14 +35,14 @@ const Lobby: FC<{
           {
             v: `https://highmountainlabs.io/arclight/static/media/65debfd3a0ce4f406a2ed6f3.mp4`,
             l: `https://highmountainlabs.io/arclight/static/media/65dec020a0ce4f406a2ed762.png`,
-            n: `Ocean Soul`,
+            n: draft.team1name,
             s: "blue",
           },
           { vs: true },
           {
             v: `https://highmountainlabs.io/arclight/static/media/65debfaea0ce4f406a2ed6c4.mp4`,
             l: `https://highmountainlabs.io/arclight/static/media/65dec03aa0ce4f406a2ed772.png`,
-            n: `Infernal Soul`,
+            n: draft.team2name,
             s: "red",
           },
         ].map((T: any) => {
