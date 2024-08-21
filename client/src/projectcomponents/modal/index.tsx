@@ -88,7 +88,6 @@ const Modal: FC<{ D: any; fns: any; draft: { [key: string]: any } }> = ({
           hoverIndex={hoverIndex}
           setHoverIndex={(i: number) => setHoverIndex(i)}
           onClick={(n: number) => {
-            console.log(draft);
             if (fns?.calls?.crux_hoverchampion)
               fns.calls.crux_hoverchampion({
                 state: fns.readState().query.d,
